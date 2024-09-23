@@ -1,0 +1,95 @@
+For this part I don't know Javascript enough to succeed without AI and for this reason I'm not sure about this frontend so feel free to give me a feedback (as in all my work)
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magic 8 Ball</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Magic 8 Ball</h1>
+        <p>Ask your yes/no question and get a magical response!</p>
+        <input type="text" id="question" placeholder="Ask your question..." />
+        <button onclick="askMagic8Ball()">Ask the Magic 8 Ball</button>
+        <div class="magic-ball" id="magicBall">8</div>
+        <p id="answer"></p>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    text-align: center;
+}
+
+input[type="text"] {
+    padding: 10px;
+    width: 80%;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-bottom: 20px;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+.magic-ball {
+    width: 150px;
+    height: 150px;
+    background-color: black;
+    color: white;
+    font-size: 1.5em;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px auto;
+}
+
+#answer {
+    font-weight: bold;
+}
+
+function askMagic8Ball() {
+    // Get the user question input
+    const question = document.getElementById('question').value;
+
+    // Check if a question was entered
+    if (question.trim() === "") {
+        document.getElementById('answer').innerText = "Please ask a question!";
+    } else {
+        // Call the Python backend API to get the Magic 8 Ball response
+        fetch('/api/magic8ball')
+            .then(response => response.json())
+            .then(data => {
+                const answer = data.response;
+                document.getElementById('magicBall').innerText = answer;
+                document.getElementById('answer').innerText = `You asked: "${question}"\nAnswer: ${answer}`;
+            })
+            .catch(error => console.error('Error:', error));
+    }
+}
